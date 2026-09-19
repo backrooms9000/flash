@@ -1,0 +1,21 @@
+body {
+    background-image: url('static/img/img.1.jpg');
+    background-attachment: fixed;
+    background-color: orange;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+a {
+    color: steelblue;
+    text-decoration: none;
+}
+
+a:hover {
+    color: orangered;
+}
+
+header a {
+    text-decoration: none;
+}
