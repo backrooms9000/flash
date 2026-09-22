@@ -1,63 +1,70 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css">
-    <title>{{ sitename }}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    <link rel="icon" href="{{ url_for('static', filename='img/favicon.jpg') }}">
+    <style>
+        body {
+            background-image: url("{{ url_for('static', filename='img/bg01.jpg') }}");
+        }
+    </style>
+    <title>{{ tag_title }}</title>
 </head>
 
-<body>
+<body class="m-0 p-2 d-flex flex-column min-vh-100">
 
-    <header class="container p-2">
-        <div class="p-4 bg-primary text-white rounded">
-            <a href="{{ url_for('index') }}">
-                <h1 class="text-light"><span class="text-warning">&#9982;</span> {{ sitename }}</h1>
+    <header class="container p-3 bg-primary text-white rounded d-flex align-items-center justify-content-between">
+
+        <a href="{{ url_for('index') }}" class="ps-2">
+            <h1 class="d-inline text-light">
+                <span class="text-warning">&#9982;</span> {{ sitename }}
+            </h1>
+        </a>
+<!--
+        <div id="headerUser">
+            <a href="#login" class="d-flex flex-column align-items-center justify-content-center">
+                <img class="d-block rounded-circle" src="{{ url_for('static', filename='img/loggedout.png') }}" alt="Logue-se!" referrerpolicy="no-referrer">
+                <small>Entrar</small>
             </a>
         </div>
+-->
     </header>
 
-    <nav class="container px-2">
-        <div class="navbar navbar-expand-sm navbar-dark bg-dark rounded">
-            <div class="container-fluid">
-                <a class="navbar-brand" href="javascript:void(0)">Logo</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mynavbar">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="mynavbar">
-                    <ul class="navbar-nav me-auto">
-                        <li class="nav-item">
-                            <a class="nav-link" href="javascript:void(0)">Link</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="javascript:void(0)">Link</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="javascript:void(0)">Link</a>
-                        </li>
-                    </ul>
-                    <form class="d-flex">
-                        <input class="form-control me-2" type="text" placeholder="Search">
-                        <button class="btn btn-primary" type="button">Search</button>
-                    </form>
-                </div>
+    <nav class="container mt-2 navbar navbar-expand-sm bg-dark navbar-dark rounded px-0">
+        <div class="container-fluid">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mynavbar">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="mynavbar">
+                <ul class="navbar-nav me-auto mt-3 mt-sm-0">
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('index') }}">Início</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('contacts') }}">Contatos</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('about') }}">Sobre</a></li>
+                </ul>
+                <form class="d-flex mt-3 mt-sm-0" method="get">
+                    <div class="input-group">
+                        <input class="form-control" type="text" name="q" placeholder="Procurar..." required>
+                        <button class="btn btn-primary bg-light border-0 p-2" type="submit">🔎</button>
+                    </div>
+                </form>
             </div>
         </div>
     </nav>
 
-  <main class="container pt-2 px-2 flex-grow-1 d-flex">
-        <div class="bg-body rounded p-3 flex-grow-1">       alguma coisa
-        {% block content %}
-        {% endblock %}
-    </div>
+    <main class="container bg-light px-3 mt-2 rounded flex-grow-1">
+        {% block content %}{% endblock %}
     </main>
 
-       <footer class="container mt-2 mb-2 px-2 ">
-        <div class="bg-dark text-light p-3 rounded text-center">&copy; 2026 {{ sitename }}</div>
+    <footer class="container mt-2 bg-dark text-light p-2 rounded text-center">
+        <small>&copy; 2026 {{ sitename }}</small>
     </footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ url_for('static', filename='js/base.js') }}"></script>
 </body>
 
 </html>

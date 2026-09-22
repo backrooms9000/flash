@@ -1,0 +1,44 @@
+{% extends '_base.html' %}
+
+{% block content %}
+
+<article>
+   
+    <h2 class="m-0 py-3">Faça Contato</h2>
+
+    <p>Preencha os campos abaixo para entrar em contato com o <strong>{{ sitename }}</strong>.</p>
+
+    <form action="{{ url_for('contacts') }}" method="post">
+
+      <div class="my-3">
+            <label for="name" class="form-label">Seu nome:</label>
+            <input type="text" class="form-control" id="name" placeholder="Seu nome completo" name="name" required>
+        </div>
+
+        <div class="my-3">
+            <label for="email" class="form-label">Seu e-mail:</label>
+            <input type="email" class="form-control" id="email" placeholder="Seu e-mail principal" name="email"
+                required>
+        </div>
+
+        <div class="my-3">
+            <label for="subject" class="form-label">Assunto:</label>
+            <input type="text" class="form-control" id="subject" placeholder="Assunto do contato" name="subject"
+                required>
+        </div>
+
+        <div class="my-3">
+            <label for="message" class="form-label">Mensagem:</label>
+            <textarea name="message" rows="4" id="message" class="form-control" placeholder="Escreva a mensagem" required></textarea>
+        </div>
+
+        <div class="my-3">
+            <button type="submit" class="btn btn-primary">Enviar</button>
+        </div>
+        
+    </form>
+</div>
+
+    </article>
+
+ {% endblock %}

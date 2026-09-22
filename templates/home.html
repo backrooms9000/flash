@@ -1,27 +1,29 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>my flask</title>
-</head>
+{% extends '_base.html' %}
 
-<body>
-    
-    {#esse e meu cabeçalho#}
-    <header><h1> sitename</h1></header>
+{% extends '_base.html' %}
 
-    <nav>
-        <a href="{{ url_for('index') }}">inicio</a>
-        <a href="{{ url_for('about') }}">sobre</a>
-    </nav>
+{% block content %}
 
-    <h2>pagina inicial</h2>
-    <p> lorem ipsum dolor sit amet consectetur adipisicing elit.Quisquam, quod. Lorem ipsum dolor sit amet consectetur
-       facilis! Magni, illum sint. Ducimus tempora dignissimos laboriosam ad, necessitatibus quia voluptatum atque.
-       Suscipit, earum.
-    </p>
+<section>
 
-</body>
+    <h2 class="m-0 py-3">Conteúdo Recente</h2>
 
-</html>
+    {% if total == 0 %}
+
+    <div class="alert alert-light text-center">
+        Nenhum conteúdo disponível. Envie o seu!
+    </div>
+
+    {% else %}
+
+        {% for content in contents %}
+
+            <p><a href="{{ url_for('view', content_id=content.c_id) }}">{{ content.c_title }}</a></p>
+
+        {% endfor %}
+
+    {% endif %}
+
+</section>
+
+{% endblock %}
