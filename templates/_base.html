@@ -1,70 +1,56 @@
+{#
+templates\_base.html
+Template base
+#}
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
+
+       <h1 style="background-color:rgb(129, 93, 76);"> Inicio</h1>
+
+ <style>
+body {
+    background-image: url('static/img/img.1.jpg');
+}
+  </style>
+
+  </h1>
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
-    <link rel="icon" href="{{ url_for('static', filename='img/favicon.jpg') }}">
-    <style>
-        body {
-            background-image: url("{{ url_for('static', filename='img/bg01.jpg') }}");
-        }
-    </style>
-    <title>{{ tag_title }}</title>
+       <title>Cadastro]</title>
 </head>
 
-<body class="m-0 p-2 d-flex flex-column min-vh-100">
+<body>
 
-    <header class="container p-3 bg-primary text-white rounded d-flex align-items-center justify-content-between">
+    <hr>
 
-        <a href="{{ url_for('index') }}" class="ps-2">
-            <h1 class="d-inline text-light">
-                <span class="text-warning">&#9982;</span> {{ sitename }}
-            </h1>
-        </a>
-<!--
-        <div id="headerUser">
-            <a href="#login" class="d-flex flex-column align-items-center justify-content-center">
-                <img class="d-block rounded-circle" src="{{ url_for('static', filename='img/loggedout.png') }}" alt="Logue-se!" referrerpolicy="no-referrer">
-                <small>Entrar</small>
-            </a>
-        </div>
--->
-    </header>
-
-    <nav class="container mt-2 navbar navbar-expand-sm bg-dark navbar-dark rounded px-0">
-        <div class="container-fluid">
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mynavbar">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="mynavbar">
-                <ul class="navbar-nav me-auto mt-3 mt-sm-0">
-                    <li class="nav-item"><a class="nav-link" href="{{ url_for('index') }}">Início</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ url_for('contacts') }}">Contatos</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ url_for('about') }}">Sobre</a></li>
-                </ul>
-                <form class="d-flex mt-3 mt-sm-0" method="get">
-                    <div class="input-group">
-                        <input class="form-control" type="text" name="q" placeholder="Procurar..." required>
-                        <button class="btn btn-primary bg-light border-0 p-2" type="submit">🔎</button>
-                    </div>
-                </form>
-            </div>
-        </div>
+    <nav>
+        <a href="{{ url_for('index') }}">Início</a>
+        <a href="{{ url_for('new_thing') }}">Novo</a>
+        <a href="{{ url_for('about') }}">Sobre</a>
     </nav>
+    <hr>
 
-    <main class="container bg-light px-3 mt-2 rounded flex-grow-1">
-        {% block content %}{% endblock %}
+    <main>
+
+        {# Exibe mensagens "flash" vindas da session #}
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% for category, message in messages %}
+        <p class="alert alert-{{ category }}">
+            {{ message }}
+        </p>
+        {% endfor %}
+        {% endwith %}
+
+        {# O conteúdo do template da rota aparece aqui! #}
+        {% block main %}{% endblock %}
+
     </main>
+    <hr>
 
-    <footer class="container mt-2 bg-dark text-light p-2 rounded text-center">
-        <small>&copy; 2026 {{ sitename }}</small>
-    </footer>
+    <footer>&copy; 2026 Criador: Wyiro</footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="{{ url_for('static', filename='js/base.js') }}"></script>
 </body>
 
 </html>

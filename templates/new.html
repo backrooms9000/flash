@@ -1,0 +1,45 @@
+{# templates\new.html #}
+{% extends '_base.html' %}
+
+{% block main %}
+
+   <h2 style="background-color:rgba(187, 161, 121, 0.9);">Cadastro de treco</h2>
+
+{% if sended %}
+
+    <p>"{{ thing_name }}" cadastrado com sucesso!</p>
+    <p><a href="{{ url_for('new_thing') }}">Cadastrar outro</a></p>
+
+{% else %}
+
+    <p>Preencha todos os campos com atenção para cadastrar um treco:</p>
+    <p><em>Todos os campos são obrigatórios!</em></p>
+
+    <form method="post">
+        <p>
+            <label for="name">Nome:</label>
+            <input type="text" name="name" id="name" required>
+        </p>
+        <p>
+            <label for="description">Descrição:</label>
+            <textarea name="description" id="description" rows="4" required></textarea>
+        </p>
+        <p>
+            <label for="location">Localização:</label>
+            <input type="text" name="location" id="location" required>
+        </p>
+        <p>
+            <label for="photo">URL da foto:</label>
+            <input type="url" name="photo" id="photo" required value="https://picsum.photos/400/300?random={{ photo_number }}">
+        </p>
+        <p>
+            <button type="submit">Salvar</button>
+        
+        </p>
+    </form>
+
+{% endif %}
+
+<p><a href="{{ url_for('index') }}">◂ Página incial</a></p>
+
+{% endblock %}

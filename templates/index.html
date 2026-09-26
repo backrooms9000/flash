@@ -1,0 +1,30 @@
+{# templates\index.html #}
+
+{% extends '_base.html' %}
+
+{% block main %}
+
+<section>
+
+    <h2>Todos os Trecos</h2>
+    <small>Mais recentes primeiro.</small>
+
+    {% if total > 0 %}
+    <div>
+        {% for content in contents %}
+        <div>
+            <div><img src="{{ content.photo }}" alt="{{ content.name }}" width="100"></div>
+            <div><a href="{{ url_for('view', thing_id=content.id) }}">{{ content.name }}</a></div>
+        </div>
+        &nbsp;
+        {% endfor %}
+    </div>
+    {% else %}
+    <p>
+        Nenhum treco cadastrado ainda!
+        <a href="{{ url_for('new_thing') }}">Cadastre um treco</a>
+    </p>
+    {% endif %}
+
+</section>
+{% endblock %}

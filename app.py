@@ -1,106 +1,164 @@
-# Importando as dependências
-from flask import Flask, render_template
+'''
+app.py
+Aplicativo principal
+'''
+
+from flask import Flask, abort, flash, redirect, render_template, request, url_for
 import sqlite3
+import random
 
-# Inicializar variáveis e componentes
-
-# Nome do aplicativo (Site da Web) → global
-sitename = "My Flask"
-
-# Inicializa o plaicativo Flask (HTTP)
 app = Flask(__name__)
 
-# Passa valores em comum para todas as páginas / rotas
-@app.context_processor
-def inject_globals():
-    return {
-        "sitename": sitename
-    }
+app.secret_key = '_use_uma_secret_key_de_verdade_aqui_e_use_dotenv_em_deploy_'
 
-# Rota da página inicial (rota raiz ou root)
+
 @app.route("/")
 def index():
 
-    # with controla a conesão e fecha quando não é mais necessária
     with sqlite3.connect('database.db') as conn:
-        # Retorna os dados do banco no formato compatível com dict
         conn.row_factory = sqlite3.Row
-
-        contents = conn.execute('''
-            SELECT 
-                c_id,
-                c_title,
-                substr(c_text, 1, 50) || '...' as c_resume
-            FROM content 
-                WHERE c_status = 'on'
-                ORDER BY c_created_at DESC;            
-        ''').fetchall()
+        contents = conn.execute("""
+            SELECT id, name, photo
+            FROM thing
+                WHERE status = 'on'
+                ORDER BY created_at DESC
+        """).fetchall()
 
     total = len(contents)
 
     return render_template(
-        "home.html",
-        tag_title=sitename,
+        'index.html',
         contents=contents,
         total=total
     )
 
 
-'''
-Criando páginas / rotas → Passos iniciais:
-    1) Crie o template HTML em `/templates`
-    2) Define a rota em `app.py`
-    3) Cria a função para a rota
-    4) Desenvolva a função para retornar o template HTML renderizado
-'''
+@app.route('/view/<int:thing_id>')
+def view(thing_id):
 
-# Rota para exibir um content completo
-@app.route('/view/<int:content_id>')
-def view(content_id):
+    with sqlite3.connect('database.db') as conn:
+        conn.row_factory = sqlite3.Row
+        content = conn.execute("""
+            SELECT *
+            FROM thing
+                WHERE status = 'on'
+                AND id = ?
+                ORDER BY created_at
+        """, (thing_id,)).fetchone()
 
-    exists = False
-    tag_title = f"{sitename} - Conteúdo não existente"
+    if content is None:
+        abort(404)
 
- with sqlite3.connect('database.db') as conn:
+    return render_template(
+        "view.html",
+        content=content
+    )
+
+
+@app.route("/new", methods=['GET', 'POST'])
+def new_thing():
+
+    photo_number = random.randint(10, 999)
+
+    if request.method == 'POST':
+        name = request.form['name'].strip()
+        description = request.form['description'].strip()
+        location = request.form['location'].strip()
+        photo = request.form['photo'].strip()
+
+        with sqlite3.connect('database.db') as conn:
+            cursor = conn.execute("""
+                INSERT INTO thing (
+                    name, description, location, photo
+                ) VALUES (?, ?, ?, ?)
+            """, (name, description, location, photo))
+        
+            flash('Registro cadastrado com sucesso!', 'success')
+
+            return redirect(url_for('view', thing_id=cursor.lastrowid))
+
+    return render_template(
+        "new.html",
+        photo_number=photo_number
+    )
+
+
+@app.route('/edit/<int:thing_id>', methods=['GET', 'POST'])
+def edit(thing_id):
+
+    with sqlite3.connect('database.db') as conn:
         conn.row_factory = sqlite3.Row
 
-        content = conn.execute('''
-            SELECT 
-                c_id, c_created_at, c_title, c_text,
-                u_id, u_name, u_photo
-            FROM content
-            INNER JOIN fbuser ON c_owner = u_id
-                WHERE c_status = 'on'
-                AND c_id = ?;        
-        ''', (content_id,)).fetchone()
+        content = conn.execute("""
+            SELECT *
+            FROM thing
+            WHERE status = 'on'
+              AND id = ?
+        """, (thing_id,)).fetchone()
 
-    if content != None:
-        exists = True
-        tag_title = f"{sitename} - {content['c_title']}"
+    if content is None:
+        abort(404)
+
+    if request.method == 'POST':
+        name = request.form['name'].strip()
+        description = request.form['description'].strip()
+        location = request.form['location'].strip()
+        photo = request.form['photo'].strip()
+
+        with sqlite3.connect('database.db') as conn:
+            conn.execute("""
+                UPDATE thing
+                SET
+                    name = ?,
+                    description = ?,
+                    location = ?,
+                    photo = ?
+                WHERE status = 'on'
+                  AND id = ?
+            """, (name, description, location, photo, thing_id))
+
+        flash('Registro atualizado com sucesso!', 'success')
+
+        return redirect(url_for('view', thing_id=thing_id))
 
     return render_template(
-        'view.html',
-        tag_title=tag_title,
-        content=content,
-        exists=exists
+        'edit.html',
+        content=content
     )
 
-# Rota para '/contacts'
-@app.route("/contacts", methods=['GET', 'POST'])
-def contacts():
-    return render_template(
-        'contacts.html',
-        tag_title=f"{sitename} - Faça Contato"
-    )
+
+@app.route('/delete/<int:thing_id>')
+def delete(thing_id):
+
+    with sqlite3.connect('database.db') as conn:
+        conn.row_factory = sqlite3.Row
+
+        content = conn.execute("""
+            SELECT id
+            FROM thing
+                WHERE status = 'on'
+                    AND id = ?
+        """, (thing_id,)).fetchone()
+
+        if content is None:
+            abort(404)
+
+        conn.execute("""
+            UPDATE thing 
+                SET status = 'del'
+                WHERE status = 'on'
+                    AND id = ?
+        """, (thing_id,))
+
+        flash('Registro apagado com sucesso!', 'success')
+
+        return redirect(url_for('index', thing_id=thing_id))
+
 
 @app.route("/about")
 def about():
-    return render_template(
-        'about.html',
-        tag_title=f"{sitename} - Sobre..."
-    )
+    return render_template("about.html")
 
 
-# Ativa o modo DEBUG e o main loop no localhost
 if __name__ == "__main__":
     app.run(debug=True)
