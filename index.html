@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Things</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 2rem;
+        }
+
+        #things {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .thing {
+            width: 200px;
+            border: 1px solid #ccc;
+            padding: 1rem;
+        }
+
+        .thing img {
+            width: 100%;
+            display: block;
+        }
+
+        .thing h2 {
+            font-size: 1.1rem;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Lista de Things</h1>
+
+    <div id="things">
+        <!-- Os dados da API aparecerão aqui -->
+    </div>
+
+    <p id="metadata"></p>
+
+    <script>
+
+        // URL da API
+        const URL = 'http://localhost:5000/api/things';
+
+
+        // Faz a requisição para a API
+        fetch(URL)
+
+            // Converte a resposta para JSON
+            .then(response => response.json())
+
+            // Trabalha com os dados recebidos
+            .then(result => {
+
+                const things = result.data;
+                const metadata = result.metadata;
+
+                const container = document.querySelector('#things');
+                const metadataElement = document.querySelector('#metadata');
+
+
+                // Percorre os registros
+                things.forEach(thing => {
+
+                    // Cria uma div
+                    const div = document.createElement('div');
+
+                    div.classList.add('thing');
+
+                    // Monta o conteúdo
+                    div.innerHTML = `
+                        <img src="${thing.photo}" alt="${thing.name}">
+                        <h2>${thing.name}</h2>
+                        <p>ID: ${thing.id}</p>
+                    `;
+
+                    // Adiciona na página
+                    container.appendChild(div);
+                });
+
+
+                // Exibe informações da paginação
+                metadataElement.textContent =
+                    `Página ${metadata.page} de ${metadata.pages}
+                     | Total: ${metadata.total}`;
+            })
+
+            // Trata erros
+            .catch(error => {
+                console.error('Erro:', error);
+            });
+
+    </script>
+
+</body>
+
+</html>

@@ -5,52 +5,48 @@ Template base
 <!DOCTYPE html>
 <html lang="pt-BR">
 
-       <h1 style="background-color:rgb(129, 93, 76);"> Inicio</h1>
-
- <style>
-body {
-    background-image: url('static/img/img.1.jpg');
-}
-  </style>
-
-  </h1>
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-       <title>Cadastro]</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    {% if page_css %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/' + page_css) }}">
+    {% endif %}
+    <link rel="shortcut icon" href="{{ url_for('static', filename='img/favicon.png') }}" type="image/x-icon">
+    <title>Cadastro de Trecos</title>
 </head>
 
 <body>
 
-    <hr>
+    <div id="wrap">
+        <header>
+            <h1>Cadastro de Trecos</h1>
+        </header>
 
-    <nav>
-        <a href="{{ url_for('index') }}">Início</a>
-        <a href="{{ url_for('new_thing') }}">Novo</a>
-        <a href="{{ url_for('about') }}">Sobre</a>
-    </nav>
-    <hr>
+        <nav>
+            <a href="{{ url_for('index') }}">Início</a>
+            <a href="{{ url_for('new_thing') }}">Novo</a>
+            <a href="{{ url_for('about') }}">Sobre</a>
+        </nav>
 
-    <main>
+        <main>
 
-        {# Exibe mensagens "flash" vindas da session #}
-        {% with messages = get_flashed_messages(with_categories=true) %}
-        {% for category, message in messages %}
-        <p class="alert alert-{{ category }}">
-            {{ message }}
-        </p>
-        {% endfor %}
-        {% endwith %}
+            {# Exibe mensagens "flash" vindas da session #}
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% for category, message in messages %}
+            <p class="alert alert-{{ category }}">
+                {{ message }}
+            </p>
+            {% endfor %}
+            {% endwith %}
 
-        {# O conteúdo do template da rota aparece aqui! #}
-        {% block main %}{% endblock %}
+            {# O conteúdo do template da rota aparece aqui! #}
+            {% block main %}{% endblock %}
 
-    </main>
-    <hr>
+        </main>
 
-    <footer>&copy; 2026 Criador: Wyiro</footer>
-
+        <footer>&copy; 2026 Cadastro de Trecos</footer>
+    </div>
 </body>
 
 </html>

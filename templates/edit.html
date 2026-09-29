@@ -1,7 +1,7 @@
 {# templates\view.html #}
 {% extends '_base.html' %}
 {% block main %}
-
+<article>
 <h2>Editando "{{ content.name }}"</h2>
 
 <p>Altere somente o que for necessário!</p>
@@ -31,5 +31,5 @@
 </form>
 
 <p><a href="{{ url_for('index') }}">◂ Página incial</a></p>
-
+</article>
 {% endblock %}

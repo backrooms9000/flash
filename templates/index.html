@@ -4,13 +4,17 @@
 
 {% block main %}
 
+<style>
+
+</style>
+
 <section>
 
     <h2>Todos os Trecos</h2>
     <small>Mais recentes primeiro.</small>
 
     {% if total > 0 %}
-    <div>
+    <div class="grid">
         {% for content in contents %}
         <div>
             <div><img src="{{ content.photo }}" alt="{{ content.name }}" width="100"></div>
@@ -19,6 +23,31 @@
         &nbsp;
         {% endfor %}
     </div>
+
+    {% if pages > 1 %}
+    <nav class="pagination">
+
+        {% if page > 1 %}
+        <a href="{{ url_for('index', p=page - 1) }}">&laquo;</a>
+        {% endif %}
+
+        {# Paginação de resultados #}
+
+        {% for number in range(1, pages + 1) %}
+        {% if number == page %}
+        <strong>{{ number }}</strong>
+        {% else %}
+        <a href="{{ url_for('index', p=number) }}">{{ number }}</a>
+        {% endif %}
+        {% endfor %}
+
+        {% if page < pages %} <a href="{{ url_for('index', p=page + 1) }}">&raquo;</a>
+            {% endif %}
+
+    </nav>
+    {% endif %}
+
+
     {% else %}
     <p>
         Nenhum treco cadastrado ainda!
