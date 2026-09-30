@@ -17,8 +17,7 @@ app.secret_key = '_use_uma_secret_key_de_verdade_aqui_e_use_dotenv_em_deploy_'
 
 @app.route("/api/things")
 @app.route("/")
-def index():
-
+w
     page = request.args.get("p", 1, type=int)
 
     per_page = 10
