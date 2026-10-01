@@ -17,7 +17,7 @@ app.secret_key = '_use_uma_secret_key_de_verdade_aqui_e_use_dotenv_em_deploy_'
 
 @app.route("/api/things")
 @app.route("/")
-w
+def index():
     page = request.args.get("p", 1, type=int)
 
     per_page = 10
@@ -136,7 +136,7 @@ def new_thing():
 
     return render_template(
         "new.html",
-        photo_number=photo_number
+        photo_number=photo_number,
     )
 
 

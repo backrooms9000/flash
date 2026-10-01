@@ -13,14 +13,20 @@ Template base
     <link rel="stylesheet" href="{{ url_for('static', filename='css/' + page_css) }}">
     {% endif %}
     <link rel="shortcut icon" href="{{ url_for('static', filename='img/favicon.png') }}" type="image/x-icon">
-    <title>Cadastro de Trecos</title>
+    <title>{{ tag_title }}</title>
+    <style>
+body {
+  background-image: url('static/img/img.1.jpg');
+}
+</style>
+
 </head>
 
 <body>
 
     <div id="wrap">
         <header>
-            <h1>Cadastro de Trecos</h1>
+            <h1 style="color:rgb(122, 71, 64);">OutCat.com</h1>
         </header>
 
         <nav>
@@ -45,7 +51,7 @@ Template base
 
         </main>
 
-        <footer>&copy; 2026 Cadastro de Trecos</footer>
+        <footer>&copy; 2026 OutCat.com</footer>
     </div>
 </body>
 
